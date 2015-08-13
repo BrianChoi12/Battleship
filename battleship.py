@@ -1,10 +1,12 @@
 from random import randint
 
+BOARD_SIZE = 7
+
 def print_board(board1, board2):
-    print "   Board 1         Board 2"
-    print "  1 2 3 4 5       1 2 3 4 5 "
+    print "     Board 1             Board 2"
+    print "  1 2 3 4 5 6 7       1 2 3 4 5 6 7 "
     count = 0
-    for i in range(5):
+    for i in range(BOARD_SIZE):
         count += 1
         row1 = board1[i]
         row2 = board2[i]
@@ -37,9 +39,9 @@ while answer.lower() == "yes" or answer.lower() == "y":
     board1 = []
     board2 = []
 
-    for x in range(5):
-        board1.append(["O"] * 5)
-        board2.append(["O"] * 5)
+    for x in range(BOARD_SIZE):
+        board1.append(["O"] * BOARD_SIZE)
+        board2.append(["O"] * BOARD_SIZE)
 
     print "\n\nLet's play Battleship!\n"
     print_board(board1, board2)
@@ -62,13 +64,13 @@ while answer.lower() == "yes" or answer.lower() == "y":
             board = board2
 
         while True:
-            guess_row = raw_input(name + ", Guess Row(1 to 5):")
+            guess_row = raw_input(name + ", Guess Row(1 to 7):")
             if len(guess_row) == 1:
                 break
         guess_row = int(guess_row) - 1
 
         while True:
-            guess_col = raw_input(name + ", Guess Col(1 to 5):")
+            guess_col = raw_input(name + ", Guess Col(1 to 7):")
             if len(guess_col) == 1:
                 break
         guess_col = int(guess_col) - 1
@@ -77,7 +79,7 @@ while answer.lower() == "yes" or answer.lower() == "y":
             print "Congratulations! " + name + " win!" 
             break
         else:
-            if (guess_row < 0 or guess_row > 4) or (guess_col < 0 or guess_col > 4):
+            if (guess_row < 0 or guess_row > BOARD_SIZE - 1) or (guess_col < 0 or guess_col > BOARD_SIZE - 1):
                 print "Oops, that's not even in the ocean."
             elif(board[guess_row][guess_col] == "X"):
                 print "You guessed that one already."
