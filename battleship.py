@@ -12,6 +12,12 @@ def print_board(board1, board2):
         row2 = board2[i]
         print str(count) + " " + " ".join(row1) + "     " + str(count) + " " + " ".join(row2)
 
+def make_result(board, ships):
+    for ship in ships:
+        if board[ship[0]][ship[1]] == "O":
+            board[ship[0]][ship[1]] = "S"
+    return board
+
 def random_row(board):
     return randint(0, len(board) - 1)
 
@@ -22,7 +28,7 @@ def check_side(row, col, ships, board):
     positions = [[row+1, col], [row-1, col], [row, col+1], [row, col-1]]
     available_positions = []
     for position in positions:
-        if position not in ships and position[0] >= 0 and position[1] >=0 and position[0] < len(board) and position[1] < board[1]:
+        if position not in ships and position[0] >= 0 and position[1] >= 0 and position[0] < len(board) and position[1] < len(board):
             available_positions.append(position)
     return available_positions
 
@@ -86,7 +92,12 @@ while answer.lower() == "yes" or answer.lower() == "y":
         guess_col = int(guess_col) - 1
 
         if check(guess_row, guess_col, ships):
+            board[guess_row][guess_col] = "*"
             print "Congratulations! " + name + " win!"
+            board1 = make_result(board1, ships1)
+            board2 = make_result(board2, ships2)
+            print "Answer:"
+            print_board(board1, board2)
             break
         else:
             if (guess_row < 0 or guess_row > BOARD_SIZE - 1) or (guess_col < 0 or guess_col > BOARD_SIZE - 1):
@@ -101,4 +112,8 @@ while answer.lower() == "yes" or answer.lower() == "y":
 
     if turn == 10:
         print "Game Over"
+        board1 = make_result(board1, ships1)
+        board2 = make_result(board2, ships2)
+        print "Answer:"
+        print_board(board1, board2)
     answer = raw_input("Would you like to play game?")
