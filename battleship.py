@@ -10,7 +10,7 @@ def print_board(board1, board2):
         count += 1
         row1 = board1[i]
         row2 = board2[i]
-        print str(count) + " " + " ".join(row1) + "     " + str(count) + " " + " ".join(row2) 
+        print str(count) + " " + " ".join(row1) + "     " + str(count) + " " + " ".join(row2)
 
 def random_row(board):
     return randint(0, len(board) - 1)
@@ -18,13 +18,24 @@ def random_row(board):
 def random_col(board):
     return randint(0, len(board[0]) - 1)
 
+def check_side(row, col, ships, board):
+    positions = [[row+1, col], [row-1, col], [row, col+1], [row, col-1]]
+    available_positions = []
+    for position in positions:
+        if position not in ships and position[0] >= 0 and position[1] >=0 and position[0] < len(board) and position[1] < board[1]:
+            available_positions.append(position)
+    return available_positions
+
 def make_ships(number, board):
     ships = []
-    while len(ships) < number:
+    while len(ships) < number*2:
         ship_row = random_row(board)
         ship_col = random_col(board)
         if [ship_row, ship_col] not in ships:
-            ships.append([ship_row, ship_col])
+            available_positions = check_side(ship_row, ship_col, ships, board)
+            if len(available_positions) != 0:
+                ships.append([ship_row, ship_col])
+                ships.append(available_positions[randint(0, len(available_positions)-1)])
     return ships
 
 def check(row, col, ships):
@@ -53,7 +64,6 @@ while answer.lower() == "yes" or answer.lower() == "y":
 
     while turn <= 9:
         print "\nTurn", (turn + 2) / 2
-        # Everything from here on should go in your for loop!
         if turn % 2 == 0:
             name = "Player 1"
             ships = ships1
@@ -76,7 +86,7 @@ while answer.lower() == "yes" or answer.lower() == "y":
         guess_col = int(guess_col) - 1
 
         if check(guess_row, guess_col, ships):
-            print "Congratulations! " + name + " win!" 
+            print "Congratulations! " + name + " win!"
             break
         else:
             if (guess_row < 0 or guess_row > BOARD_SIZE - 1) or (guess_col < 0 or guess_col > BOARD_SIZE - 1):
